@@ -1,0 +1,3 @@
+domain: cluster.x-k8s.io
+repo: github.com/prakashmirji/cluster-api-provider-ecp
+version: "2"
