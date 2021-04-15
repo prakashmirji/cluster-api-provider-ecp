@@ -1,3 +1,10 @@
 domain: cluster.x-k8s.io
 repo: github.com/prakashmirji/cluster-api-provider-ecp
+resources:
+- group: infrastructure
+  kind: ECPCluster
+  version: v1alpha3
+- group: infrastructure
+  kind: ECPMachine
+  version: v1alpha3
 version: "2"
