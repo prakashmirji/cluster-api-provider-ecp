@@ -1,7 +1,7 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
-kind: ECPCluster
+kind: ECPBootstrapProviderConfig
 metadata:
-  name: ecpcluster-sample
+  name: ecpbootstrapproviderconfig-sample
 spec:
   # Add fields here
-  clustertype: "ecp"
+  foo: bar

@@ -1,0 +1,34 @@
+apiVersion: cluster.x-k8s.io/v1alpha4
+kind: Machine
+metadata:
+  name: hello-ecpmachine
+spec:
+  bootstrap:
+    configRef:
+      apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+      kind: ECPBootstrapProviderConfig
+      name: ecp-cluster-1-controlplane-0
+  clusterName: ecp-cluster-1
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: ECPMachine
+    name: worker1
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: ECPMachine
+metadata:
+  name: worker1
+spec:
+  location: "us-east"
+  providerID: "100"
+  roles: 
+    - master
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: ECPBootstrapProviderConfig
+metadata:
+  name: hello-ecpbootstrapconfig
+spec:
+  ready: true
+  dataSecretName: "test"

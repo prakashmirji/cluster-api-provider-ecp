@@ -1,7 +1,8 @@
+---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: ECPCluster
 metadata:
-  name: ecpcluster-sample
+  name: hello-ecpcluster
 spec:
-  # Add fields here
   clustertype: "ecp"
+  location: "us-east"

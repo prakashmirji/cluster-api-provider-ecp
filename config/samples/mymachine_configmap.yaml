@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecpmachine-cm
+  namespace: static-worker
+  labels:
+    allocated: "false"
+data:
+  hostname: 172.18.200.l29
+
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: ecpmachine-cm
+#   namespace: static-worker
+#   labels:
+#     - name: worker1
+#       allocated: "false"
+#     - name: worker2
+#       allocated: "false"
+#     - name: worker3
+#       allocated: "false"
+# data:
+#   - name: worker1
+#     hostname: 172.18.200.l29
+#   - name: worker2
+#     hostname: 172.18.200.l30
+#   - name: worker3
+#     hostname: 172.18.200.l31
+    

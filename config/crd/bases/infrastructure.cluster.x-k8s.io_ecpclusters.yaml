@@ -8,6 +8,19 @@ metadata:
   creationTimestamp: null
   name: ecpclusters.infrastructure.cluster.x-k8s.io
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.clustertype
+    name: clustertype
+    type: string
+  - JSONPath: .spec.location
+    name: location
+    type: string
+  - JSONPath: .status.status
+    name: status
+    type: string
+  - JSONPath: .status.ready
+    name: ready
+    type: boolean
   group: infrastructure.cluster.x-k8s.io
   names:
     kind: ECPCluster
@@ -36,13 +49,40 @@ spec:
         spec:
           description: ECPClusterSpec defines the desired state of ECPCluster
           properties:
-            foo:
+            clustertype:
               description: Foo is an example field of ECPCluster. Edit ECPCluster_types.go
-                to remove/update
+                to remove/update Foo string `json:"foo,omitempty"`
+              type: string
+            controlPlaneEndpoint:
+              description: ControlPlaneEndpoint identifies the endpoint used to connect
+                to the target’s cluster
+              properties:
+                host:
+                  description: The hostname on which the API server is serving.
+                  type: string
+                port:
+                  description: The port on which the API server is serving.
+                  format: int32
+                  type: integer
+              required:
+              - host
+              - port
+              type: object
+            location:
               type: string
           type: object
         status:
           description: ECPClusterStatus defines the observed state of ECPCluster
+          properties:
+            ready:
+              description: a boolean field that is true when the infrastructure is
+                ready to be used.
+              type: boolean
+            status:
+              description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                of cluster Important: Run "make" to regenerate code after modifying
+                this file'
+              type: string
           type: object
       type: object
   version: v1alpha3

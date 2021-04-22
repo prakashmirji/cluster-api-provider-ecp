@@ -1,7 +1,10 @@
+---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: ECPMachine
 metadata:
-  name: ecpmachine-sample
+  name: worker1
 spec:
-  # Add fields here
-  machinetype: "baremetal"
+  location: "us-east"
+  providerID: "100"
+  roles: 
+    - master

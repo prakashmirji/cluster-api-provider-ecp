@@ -1,0 +1,20 @@
+# permissions for end users to view ecpbootstrapproviderconfigs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ecpbootstrapproviderconfig-viewer-role
+rules:
+- apiGroups:
+  - infrastructure.cluster.x-k8s.io
+  resources:
+  - ecpbootstrapproviderconfigs
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - infrastructure.cluster.x-k8s.io
+  resources:
+  - ecpbootstrapproviderconfigs/status
+  verbs:
+  - get

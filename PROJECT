@@ -7,4 +7,7 @@ resources:
 - group: infrastructure
   kind: ECPMachine
   version: v1alpha3
+- group: infrastructure
+  kind: ECPBootstrapProviderConfig
+  version: v1alpha3
 version: "2"

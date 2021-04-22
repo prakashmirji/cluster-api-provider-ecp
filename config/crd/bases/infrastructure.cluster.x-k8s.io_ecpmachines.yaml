@@ -8,6 +8,31 @@ metadata:
   creationTimestamp: null
   name: ecpmachines.infrastructure.cluster.x-k8s.io
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.hostIP
+    name: hostip
+    type: string
+  - JSONPath: .spec.osImage
+    name: osimage
+    type: string
+  - JSONPath: .spec.providerID
+    name: providerID
+    type: string
+  - JSONPath: .spec.roles
+    name: roles
+    type: string
+  - JSONPath: .spec.tags
+    name: tags
+    type: string
+  - JSONPath: .status.status
+    name: status
+    type: string
+  - JSONPath: .status.state
+    name: state
+    type: string
+  - JSONPath: .status.Ready
+    name: ready
+    type: boolean
   group: infrastructure.cluster.x-k8s.io
   names:
     kind: ECPMachine
@@ -36,13 +61,69 @@ spec:
         spec:
           description: ECPMachineSpec defines the desired state of ECPMachine
           properties:
-            foo:
-              description: Foo is an example field of ECPMachine. Edit ECPMachine_types.go
-                to remove/update
+            location:
+              description: Location is the DC location name where this machine present
               type: string
+            machineType:
+              description: MachineType indicates machine types like onprem or aws
+              type: string
+            osImage:
+              description: OS Image for the machine
+              type: string
+            osVersion:
+              description: OS version for the machine
+              type: string
+            providerID:
+              description: ProviderID is the unique identifier as specified by the
+                cloud provider.
+              type: string
+            proxy:
+              description: Proxy address for external communication
+              type: string
+            roles:
+              description: Roles to be applied to the machine. Can take - controlplane,
+                etcd, worker
+              items:
+                type: string
+              type: array
+            size:
+              description: Size of the machine
+              type: string
+            sshKey:
+              description: SSHKey to be used
+              type: string
+            sshPassword:
+              description: SSHPassword to be used
+              type: string
+            sshUser:
+              description: SSHUser to be used
+              type: string
+            tags:
+              additionalProperties:
+                type: string
+              description: Tags to be applied to the machine. Can take key value pair
+                strings
+              type: object
+          required:
+          - roles
           type: object
         status:
           description: ECPMachineStatus defines the observed state of ECPMachine
+          properties:
+            hostIP:
+              description: HostIP ip of the machine
+              type: string
+            ready:
+              description: Ready is true when the provider resource is ready.
+              type: boolean
+            state:
+              description: State stores machine state
+              type: string
+            status:
+              description: Status stores machine status
+              type: string
+          required:
+          - hostIP
           type: object
       type: object
   version: v1alpha3

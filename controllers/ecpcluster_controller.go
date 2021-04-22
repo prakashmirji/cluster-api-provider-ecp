@@ -21,6 +21,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/runtime"
+	clusterv1 "sigs.k8s.io/cluster-api/api/v1alpha3"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -36,12 +37,47 @@ type ECPClusterReconciler struct {
 
 // +kubebuilder:rbac:groups=infrastructure.cluster.x-k8s.io,resources=ecpclusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=infrastructure.cluster.x-k8s.io,resources=ecpclusters/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=cluster.x-k8s.io,resources=clusters;clusters/status,verbs=get;list;watch
 
 func (r *ECPClusterReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	_ = context.Background()
-	_ = r.Log.WithValues("ecpcluster", req.NamespacedName)
+	ctx := context.Background()
+	log := r.Log.WithValues("ecpcluster", req.NamespacedName)
 
-	// your logic here
+	var cluster infrastructurev1alpha3.ECPCluster
+
+	if err := r.Get(ctx, req.NamespacedName, &cluster); err != nil {
+		log.Info("error getting object", "name", req.NamespacedName)
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	if cluster.Status.Status == "OK" {
+		return ctrl.Result{}, nil
+	}
+
+	if cluster.Status.Status == "NOT_SUPPORTED" {
+		return ctrl.Result{}, nil
+	}
+
+	ctype := cluster.Spec.Clustertype
+	switch ctype {
+	case "ecp":
+		cluster.Status.Status = "OK"
+	case "aws":
+		cluster.Status.Status = "NOT_SUPPORTED"
+	}
+
+	cluster.Status.Ready = true
+	cluster.Spec.ControlPlaneEndpoint = clusterv1.APIEndpoint{
+		Host: "10.10.10.10",
+		Port: 8080,
+	}
+
+	if err := r.Status().Update(ctx, &cluster); err != nil {
+		log.Info("error updating status", "name", req.NamespacedName)
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	log.Info("hello,  this is from clustertype controller", "name", req.NamespacedName)
 
 	return ctrl.Result{}, nil
 }

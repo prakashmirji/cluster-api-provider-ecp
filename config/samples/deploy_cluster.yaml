@@ -1,0 +1,20 @@
+apiVersion: cluster.x-k8s.io/v1alpha4
+kind: Cluster
+metadata:
+  name: hello-ecpcluster
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks: ["192.168.0.0/16"]
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: ECPCluster
+    name: hello-ecpcluster
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: ECPCluster
+metadata:
+  name: hello-ecpcluster
+spec:
+  clustertype: "ecp"
+  location: "us-east"
